@@ -1,0 +1,217 @@
+{% extends "page.html" %}
+
+{% block breadcrumb_content %}
+  <li class="active">{{ _('KPIs') }}</li>
+{% endblock %}
+
+{% block primary_content %}
+  <article class="module">
+    <section id="stats-total-datasets" class="module-content tab-content active">
+      <h2>{{ _('Total Datasets (Weekly)') }}</h2>
+
+      {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
+      {% set yaxis = {'min': 0} %}
+      <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
+        <thead>
+          <tr>
+            <th>{{ _("Week") }}</th>
+            <th>{{ _("Total Datasets") }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in c.raw_packages_by_week %}
+            <tr>
+              <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date) }}</time></th>
+              <td>{{ row.total_packages }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section id="stats-total-resources" class="module-content tab-content">
+      <h2>{{ _('Total Resources (Weekly)') }}</h2>
+
+      {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
+      {% set yaxis = {'min': 0} %}
+      <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
+        <thead>
+          <tr>
+            <th>{{ _("Week") }}</th>
+            <th>{{ _("Total Resources") }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in c.raw_resources_by_week %}
+            <tr>
+              <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date) }}</time></th>
+              <td>{{ row.total_resources }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section id="stats-total-sources" class="module-content tab-content">
+      <h2>{{ _('Total Sources (Weekly)') }}</h2>
+
+      {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
+      {% set yaxis = {'min': 0} %}
+      <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
+        <thead>
+          <tr>
+            <th>{{ _("Week") }}</th>
+            <th>{{ _("Total Sources") }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in c.raw_harvesters_by_week %}
+            <tr>
+              <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date) }}</time></th>
+              <td>{{ row.total_packages }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section id="stats-total-providers" class="module-content tab-content">
+      <h2>{{ _('Total Providers (Weekly)') }}</h2>
+
+      {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
+      {% set yaxis = {'min': 0} %}
+      <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
+        <thead>
+          <tr>
+            <th>{{ _("Week") }}</th>
+            <th>{{ _("Total Providers") }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in c.raw_organizations_by_week %}
+            <tr>
+              <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date) }}</time></th>
+              <td>{{ row.total_organizations }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section id="stats-total-api-calls" class="module-content tab-content">
+      <h2>{{ _('API Calls per Week') }}</h2>
+
+      {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
+      {% set yaxis = {'min': 0} %}
+      <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
+        <thead>
+          <tr>
+            <th>{{ _("Week") }}</th>
+            <th>{{ _("API Calls") }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in c.raw_api_calls_by_week %}
+            <tr>
+              <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date) }}</time></th>
+              <td>{{ row.total_hits }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section id="stats-total-hits" class="module-content tab-content">
+      <h2>{{ _('Website Hits (Weekly)') }}</h2>
+
+      {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
+      {% set yaxis = {'min': 0} %}
+      <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
+        <thead>
+          <tr>
+            <th>{{ _("Week") }}</th>
+            <th>{{ _("Hits") }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in c.raw_hits_by_week %}
+            <tr>
+              <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date) }}</time></th>
+              <td>{{ row.total_hits }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section id="stats-total-api-visits" class="module-content tab-content">
+      <h2>{{ _('Daily API Users (Weekly)') }}</h2>
+
+      {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
+      {% set yaxis = {'min': 0} %}
+      <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
+        <thead>
+          <tr>
+            <th>{{ _("Week") }}</th>
+            <th>{{ _("Daily API Users") }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in c.raw_api_visits_by_week %}
+            <tr>
+              <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date) }}</time></th>
+              <td>{{ row.total_visits }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section id="stats-total-page-visits" class="module-content tab-content">
+      <h2>{{ _('Daily Website Users (Weekly)') }}</h2>
+
+      {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
+      {% set yaxis = {'min': 0} %}
+      <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
+        <thead>
+          <tr>
+            <th>{{ _("Week") }}</th>
+            <th>{{ _("Daily Website Users") }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in c.raw_page_visits_by_week %}
+            <tr>
+              <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date) }}</time></th>
+              <td>{{ row.total_visits }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+  </article>
+{% endblock %}
+
+{% block secondary_content %}
+  <section class="module module-narrow">
+    <h2 class="module-heading"><i class="icon-bar-chart icon-medium"></i> {{ _('KPI Menu') }}</h2>
+    <nav data-module="stats-nav">
+      <ul class="unstyled nav nav-simple">
+        <li class="nav-item active"><a href="#stats-total-datasets" data-toggle="tab">{{ _('Total Datasets (Weekly)') }}</a></li>
+        <li class="nav-item"><a href="#stats-total-resources" data-toggle="tab">{{ _('Total Resources (Weekly)') }}</a></li>
+        <li class="nav-item"><a href="#stats-total-sources" data-toggle="tab">{{ _('Total Sources (Weekly)') }}</a></li>
+        <li class="nav-item"><a href="#stats-total-providers" data-toggle="tab">{{ _('Total Providers (Weekly)') }}</a></li>
+        <li class="nav-item"><a href="#stats-total-api-calls" data-toggle="tab">{{ _('API Calls (Weekly)') }}</a></li>
+        <li class="nav-item"><a href="#stats-total-hits" data-toggle="tab">{{ _('Website Hits (Weekly)') }}</a></li>
+        <li class="nav-item"><a href="#stats-total-api-visits" data-toggle="tab">{{ _('Daily API Users (Weekly)') }}</a></li>
+        <li class="nav-item"><a href="#stats-total-page-visits" data-toggle="tab">{{ _('Daily Website Users (Weekly)') }}</a></li>
+      </ul>
+    </nav>
+  </section>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  {% resource "ckanext-kpis/kpis" %}
+{% endblock %}
