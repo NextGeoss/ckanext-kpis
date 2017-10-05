@@ -1,18 +1,12 @@
 # encoding: utf-8
 
 import datetime
-
-from ckan.common import config
 from sqlalchemy import Table, select, join, func, and_, distinct
 
+from ckan.common import config
 import ckan.plugins as p
 import ckan.model as model
 
-cache_enabled = p.toolkit.asbool(config.get('ckanext.kpis.cache_enabled', 'False'))
-
-if cache_enabled:
-    from pylons import cache
-    our_cache = cache.get_cache('stats', type='dbm')
 
 DATE_FORMAT = '%Y-%m-%d'
 
