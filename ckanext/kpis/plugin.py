@@ -1,15 +1,18 @@
 # encoding: utf-8
 
 from logging import getLogger
-
-import ckan.plugins as p
-import ckan.config.middleware.common_middleware as middleware
-
 import sqlalchemy as sa
 import hashlib
 import urllib2
 
+import ckan.plugins as p
+import ckan.config.middleware.common_middleware as middleware
+
+from ckanext.kpis import helpers
+
+
 log = getLogger(__name__)
+
 
 class KPIsPlugin(p.SingletonPlugin):
     """KPIs plugin"""
@@ -92,3 +95,5 @@ class TrackingPlusMiddleware(object):
         return self.app(environ, start_response)
 
 middleware.TrackingMiddleware = TrackingPlusMiddleware
+
+kpi_goals = helpers.get_goals()
