@@ -7,6 +7,8 @@ from ckan.common import config
 import ckan.plugins as p
 import ckan.model as model
 
+from ckanext.kpis.plugin import kpi_goals
+
 
 DATE_FORMAT = '%Y-%m-%d'
 
@@ -30,6 +32,11 @@ def get_first_date():
     return first_date
 
 first_date = get_first_date()
+
+
+def calc_percentage(goal, value):
+    """Return the percentage of the goal completed."""
+    return round(100 * (float(value) / float(goal)), 2)
 
 
 class UsageStats(object):
@@ -109,13 +116,24 @@ class UsageStats(object):
 
     @classmethod
     def get_dataset_counts_for_weeks(cls, set_type, weeks):
+        """Returns a list of the total number of datasets or harvesters,
+        depending on the set_type, plus the completion percentage for
+        the respective KPI goal for each week in weeks.
+        """
         dataset_counts_for_weeks = []
         count = 0
+        # Determine the correct goal
+        if set_type == 'dataset':
+            goal = kpi_goals['total_datasets']
+        elif set_type == 'harvest':
+            goal = kpi_goals['total_sources']
         for week in weeks:
             count += cls.get_datasets_for_week(set_type, week)
+            percent = calc_percentage(goal, count)
             dataset_counts_for_weeks.append((week[0].strftime(DATE_FORMAT),
-                count))
+                count, percent))
         return dataset_counts_for_weeks
+
 
     @classmethod
     def get_resource_counts_for_weeks(cls, weeks):

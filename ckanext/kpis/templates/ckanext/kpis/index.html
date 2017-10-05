@@ -4,18 +4,25 @@
   <li class="active">{{ _('KPIs') }}</li>
 {% endblock %}
 
+{% set datasets_heading = '{} ({}% {})'.format(_('Total Datasets'), c.raw_packages_by_week[-1]['percent_complete'], _('complete')) %}
+{% set sources_heading = '{} ({}% {})'.format(_('Total Sources'), c.raw_harvesters_by_week[-1]['percent_complete'], _('complete')) %}
+
 {% block primary_content %}
   <article class="module">
     <section id="stats-total-datasets" class="module-content tab-content active">
-      <h2>{{ _('Total Datasets (Weekly)') }}</h2>
+      <h2>{{ datasets_heading }}</h2>
+      <p>{{ _('Goal:') }} {{ c.kpi_goals['total_datasets'] }}</br>
+      {{ _('Current total:') }} {{ c.raw_packages_by_week[-1]['total_packages'] }}</br>
+      {{ _('Percentatge complete:') }} {{ c.raw_packages_by_week[-1]['percent_complete'] }}%</p>
 
       {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
       {% set yaxis = {'min': 0} %}
       <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
         <thead>
           <tr>
-            <th>{{ _("Week") }}</th>
-            <th>{{ _("Total Datasets") }}</th>
+            <th>{{ _('Week') }}</th>
+            <th>{{ _('Total Datasets') }}</th>
+            <th>{{ _('Percentage Completed') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -23,6 +30,7 @@
             <tr>
               <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date) }}</time></th>
               <td>{{ row.total_packages }}</td>
+              <td>{{ row.percent_complete }}%</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -53,15 +61,18 @@
     </section>
 
     <section id="stats-total-sources" class="module-content tab-content">
-      <h2>{{ _('Total Sources (Weekly)') }}</h2>
-
+      <h2>{{ sources_heading }}</h2>
+      <p>{{ _('Goal:') }} {{ c.kpi_goals['total_sources'] }}</br>
+      {{ _('Current total:') }} {{ c.raw_harvesters_by_week[-1]['total_packages'] }}</br>
+      {{ _('Percentatge complete:') }} {{ c.raw_harvesters_by_week[-1]['percent_complete'] }}%</p>
       {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
       {% set yaxis = {'min': 0} %}
       <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
         <thead>
           <tr>
-            <th>{{ _("Week") }}</th>
-            <th>{{ _("Total Sources") }}</th>
+            <th>{{ _('Week') }}</th>
+            <th>{{ _('Total Sources') }}</th>
+            <th>{{ _('Percentage Completed') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -69,6 +80,7 @@
             <tr>
               <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date) }}</time></th>
               <td>{{ row.total_packages }}</td>
+              <td>{{ row.percent_complete }}</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -198,9 +210,9 @@
     <h2 class="module-heading"><i class="icon-bar-chart icon-medium"></i> {{ _('KPI Menu') }}</h2>
     <nav data-module="stats-nav">
       <ul class="unstyled nav nav-simple">
-        <li class="nav-item active"><a href="#stats-total-datasets" data-toggle="tab">{{ _('Total Datasets (Weekly)') }}</a></li>
+        <li class="nav-item active"><a href="#stats-total-datasets" data-toggle="tab">{{ datasets_heading }}</a></li>
         <li class="nav-item"><a href="#stats-total-resources" data-toggle="tab">{{ _('Total Resources (Weekly)') }}</a></li>
-        <li class="nav-item"><a href="#stats-total-sources" data-toggle="tab">{{ _('Total Sources (Weekly)') }}</a></li>
+        <li class="nav-item"><a href="#stats-total-sources" data-toggle="tab">{{ sources_heading }}</a></li>
         <li class="nav-item"><a href="#stats-total-providers" data-toggle="tab">{{ _('Total Providers (Weekly)') }}</a></li>
         <li class="nav-item"><a href="#stats-total-api-calls" data-toggle="tab">{{ _('API Calls (Weekly)') }}</a></li>
         <li class="nav-item"><a href="#stats-total-hits" data-toggle="tab">{{ _('Website Hits (Weekly)') }}</a></li>
