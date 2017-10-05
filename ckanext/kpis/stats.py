@@ -42,7 +42,6 @@ class UsageStats(object):
 
     @classmethod
     def get_weeks(cls):
-        #first_date = get_first_date()
         today = datetime.datetime.utcnow().date()
         week_start = first_date - datetime.timedelta(days=datetime.date.weekday(first_date))
         weeks = []
@@ -61,18 +60,6 @@ class UsageStats(object):
             days.append(day_one + datetime.timedelta(days=i))
         days.append(week[1])
         return days
-
-    # @classmethod
-    # def get_hits_for_week(cls, week):
-    #     tracking_raw = table('tracking_raw')
-    #     s = select([func.count(tracking_raw.c.access_timestamp)], from_obj=[tracking_raw]).\
-    #           where(and_(tracking_raw.c.access_timestamp >= week[0], tracking_raw.c.access_timestamp <= week[1]))
-    #     count = model.Session.execute(s).fetchone()[0]
-    #     #session.query(func.count(tracking_type.c.access_timestamp))
-    #     #select([func.count()]).select_from(tracking_raw).filter(and_(tracking_raw.access_timestamp >= week[0]).\
-    #     #    filter(tracking_raw <= week[1]))
-    #     return count
-
 
     @classmethod
     def get_hit_counts(cls, tracking_type):
