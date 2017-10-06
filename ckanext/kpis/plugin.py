@@ -4,6 +4,7 @@ from logging import getLogger
 
 import ckan.plugins as p
 import ckan.config.middleware.common_middleware as middleware
+from ckan.common import config
 
 import sqlalchemy as sa
 import hashlib
@@ -92,3 +93,5 @@ class TrackingPlusMiddleware(object):
         return self.app(environ, start_response)
 
 middleware.TrackingMiddleware = TrackingPlusMiddleware
+
+show_graphs = p.toolkit.asbool(config.get('ckanext.kpis.show_graphs', False))
