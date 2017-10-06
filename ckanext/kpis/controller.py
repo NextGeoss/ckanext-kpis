@@ -26,6 +26,11 @@ class StatsController(BaseController):
         c.num_organizations_by_week = usage_stats.get_organization_counts()
 
 
+        c.num_users_by_month = [{'date': h.date_str_to_datetime(month_date),\
+            'users': users, 'percent_complete': percentage} for month_date,\
+            users, percentage in usage_stats.get_monthly_user_counts('all')]
+
+
         c.raw_packages_by_week = [{'date': h.date_str_to_datetime(week_date),\
             'total_packages': cumulative_num_hits, \
             'percent_complete': percentage} for week_date,\

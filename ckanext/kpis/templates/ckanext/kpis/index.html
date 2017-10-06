@@ -5,7 +5,11 @@
 {% endblock %}
 
 {% set datasets_heading = '{} ({}% {})'.format(_('Total Datasets'), c.raw_packages_by_week[-1]['percent_complete'], _('complete')) %}
+
 {% set sources_heading = '{} ({}% {})'.format(_('Total Sources'), c.raw_harvesters_by_week[-1]['percent_complete'], _('complete')) %}
+
+{% set users_heading = '{} ({}% {})'.format(_('Monthly Users'), c.num_users_by_month[-1]['percent_complete'], _('complete')) %}
+
 
 {% block primary_content %}
   <article class="module">
@@ -156,6 +160,34 @@
       </table>
     </section>
 
+    <section id="stats-total-monthly-users" class="module-content tab-content">
+      <h2>{{ users_heading }}</h2>
+      <p>{{ _('Goal:') }} {{ c.kpi_goals['monthly_users'] }}</br>
+      {{ _('Current total:') }} {{ c.num_users_by_month[-1]['users'] }}</br>
+      {{ _('Percentatge complete:') }} {{ c.num_users_by_month[-1]['percent_complete'] }}%</p>
+
+      {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
+      {% set yaxis = {'min': 0} %}
+      <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
+        <thead>
+          <tr>
+            <th>{{ _('Month') }}</th>
+            <th>{{ _('Users in Month') }}</th>
+            <th>{{ _('Percentage Completed') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in c.num_users_by_month %}
+            <tr>
+              <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date, '%B %Y') }}</time></th>
+              <td>{{ row.users }}</td>
+              <td>{{ row.percent_complete }}%</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
     <section id="stats-total-api-visits" class="module-content tab-content">
       <h2>{{ _('Daily API Users (Weekly)') }}</h2>
 
@@ -218,6 +250,7 @@
         <li class="nav-item"><a href="#stats-total-hits" data-toggle="tab">{{ _('Website Hits (Weekly)') }}</a></li>
         <li class="nav-item"><a href="#stats-total-api-visits" data-toggle="tab">{{ _('Daily API Users (Weekly)') }}</a></li>
         <li class="nav-item"><a href="#stats-total-page-visits" data-toggle="tab">{{ _('Daily Website Users (Weekly)') }}</a></li>
+        <li class="nav-item"><a href="#stats-total-monthly-users" data-toggle="tab">{{ users_heading }}</a></li>
       </ul>
     </nav>
   </section>
