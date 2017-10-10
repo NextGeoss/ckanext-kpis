@@ -1,18 +1,15 @@
 # encoding: utf-8
 
 import datetime
-
-from ckan.common import config
+import calendar
 from sqlalchemy import Table, select, join, func, and_, distinct
 
+from ckan.common import config
 import ckan.plugins as p
 import ckan.model as model
 
-cache_enabled = p.toolkit.asbool(config.get('ckanext.kpis.cache_enabled', 'False'))
+from ckanext.kpis.plugin import kpi_goals
 
-if cache_enabled:
-    from pylons import cache
-    our_cache = cache.get_cache('stats', type='dbm')
 
 DATE_FORMAT = '%Y-%m-%d'
 
@@ -38,11 +35,19 @@ def get_first_date():
 first_date = get_first_date()
 
 
+def calc_percentage(goal, value):
+    """Return the percentage of the goal completed."""
+    return round(100 * (float(value) / float(goal)), 2)
+
+def get_days_in_month(day):
+    """Return the number days in the month that the day is part of."""
+    return calendar.monthrange(day.year, day.month)[1]
+
+
 class UsageStats(object):
 
     @classmethod
     def get_weeks(cls):
-        #first_date = get_first_date()
         today = datetime.datetime.utcnow().date()
         week_start = first_date - datetime.timedelta(days=datetime.date.weekday(first_date))
         weeks = []
@@ -53,6 +58,20 @@ class UsageStats(object):
         return weeks
 
     @classmethod
+    def get_months(cls):
+        today = datetime.datetime.utcnow().date()
+        end_of_last_month = today.replace(day=1) - datetime.timedelta(days=1)
+        month_start = first_date.replace(day=1)
+        months = []
+        while month_start < end_of_last_month:
+            days = get_days_in_month(month_start)
+            month_end = month_start + datetime.timedelta(days=days-1)
+            months.append((month_start, month_end))
+            month_start = month_end + datetime.timedelta(days=1)
+        return months
+
+
+    @classmethod
     def get_days(cls, week):
         days = []
         day_one = week[0]
@@ -61,18 +80,6 @@ class UsageStats(object):
             days.append(day_one + datetime.timedelta(days=i))
         days.append(week[1])
         return days
-
-    # @classmethod
-    # def get_hits_for_week(cls, week):
-    #     tracking_raw = table('tracking_raw')
-    #     s = select([func.count(tracking_raw.c.access_timestamp)], from_obj=[tracking_raw]).\
-    #           where(and_(tracking_raw.c.access_timestamp >= week[0], tracking_raw.c.access_timestamp <= week[1]))
-    #     count = model.Session.execute(s).fetchone()[0]
-    #     #session.query(func.count(tracking_type.c.access_timestamp))
-    #     #select([func.count()]).select_from(tracking_raw).filter(and_(tracking_raw.access_timestamp >= week[0]).\
-    #     #    filter(tracking_raw <= week[1]))
-    #     return count
-
 
     @classmethod
     def get_hit_counts(cls, tracking_type):
@@ -85,6 +92,12 @@ class UsageStats(object):
         weeks = cls.get_weeks()
         visit_counts_for_weeks = cls.get_visit_counts_for_weeks(tracking_type, weeks)
         return visit_counts_for_weeks
+
+    @classmethod
+    def get_monthly_user_counts(cls, tracking_type):
+        months = cls.get_months()
+        visits_for_months = cls.get_visit_counts_for_months(tracking_type, months)
+        return visits_for_months
 
     @classmethod
     def get_dataset_counts(cls, set_type):
@@ -125,16 +138,36 @@ class UsageStats(object):
                 count))
         return visit_counts_for_weeks
 
+    @classmethod
+    def get_visit_counts_for_months(cls, tracking_type, months):
+        visit_counts_for_months = []
+        for month in months:
+            count = cls.get_visits_for_month(tracking_type, month)
+            percent = calc_percentage(kpi_goals['monthly_users'], count)
+            visit_counts_for_months.append((month[0].strftime(DATE_FORMAT),
+                count, percent))
+        return visit_counts_for_months
 
     @classmethod
     def get_dataset_counts_for_weeks(cls, set_type, weeks):
+        """Returns a list of the total number of datasets or harvesters,
+        depending on the set_type, plus the completion percentage for
+        the respective KPI goal for each week in weeks.
+        """
         dataset_counts_for_weeks = []
         count = 0
+        # Determine the correct goal
+        if set_type == 'dataset':
+            goal = kpi_goals['total_datasets']
+        elif set_type == 'harvest':
+            goal = kpi_goals['total_sources']
         for week in weeks:
             count += cls.get_datasets_for_week(set_type, week)
+            percent = calc_percentage(goal, count)
             dataset_counts_for_weeks.append((week[0].strftime(DATE_FORMAT),
-                count))
+                count, percent))
         return dataset_counts_for_weeks
+
 
     @classmethod
     def get_resource_counts_for_weeks(cls, weeks):
@@ -240,3 +273,20 @@ class UsageStats(object):
             visits = cls.get_visits_for_day(tracking_type, day)
             visits_for_week += visits
         return visits_for_week
+
+    @classmethod
+    def get_visits_for_month(cls, tracking_type, month):
+        """Get the number of unique users for a given month."""
+        tracking_raw = table('tracking_raw')
+        if tracking_type == 'all':
+            tracking_query = and_(tracking_raw.c.access_timestamp >= month[0],\
+                tracking_raw.c.access_timestamp <= month[1])
+        else:
+            tracking_query = and_(tracking_raw.c.tracking_type == tracking_type,\
+                tracking_raw.c.access_timestamp >= month[0],\
+                tracking_raw.c.access_timestamp <= month[1])
+        s = select([func.count(distinct(tracking_raw.c.user_key))],\
+            from_obj=[tracking_raw]).\
+            where(tracking_query)
+        count_for_month = model.Session.execute(s).fetchone()[0]
+        return count_for_month
