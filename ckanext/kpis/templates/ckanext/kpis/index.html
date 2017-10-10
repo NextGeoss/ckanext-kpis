@@ -213,5 +213,9 @@
 
 {% block scripts %}
   {{ super() }}
-  {% resource "ckanext-kpis/kpis" %}
+  {% if c.show_graphs %}
+    {% resource "ckanext-kpis/with-graphs" %}
+  {% else %}
+    {% resource "ckanext-kpis/without-graphs" %}
+  {% endif %}
 {% endblock %}

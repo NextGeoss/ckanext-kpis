@@ -5,11 +5,15 @@ from ckan.lib.base import BaseController
 import stats as stats_lib
 import ckan.lib.helpers as h
 
+from ckanext.kpis.plugin import show_graphs
+
 
 class StatsController(BaseController):
 
     def index(self):
         c = p.toolkit.c
+
+        c.show_graphs = show_graphs
 
         usage_stats = stats_lib.UsageStats()
         c.num_api_calls_by_week = usage_stats.get_hit_counts('api')
