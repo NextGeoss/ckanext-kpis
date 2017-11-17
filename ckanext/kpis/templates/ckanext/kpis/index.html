@@ -89,7 +89,7 @@
             <tr>
               <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date) }}</time></th>
               <td>{{ row.total_packages }}</td>
-              <td>{{ row.percent_complete }}</td>
+              <td>{{ row.percent_complete }}%</td>
             </tr>
           {% endfor %}
         </tbody>
