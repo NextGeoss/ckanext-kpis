@@ -18,7 +18,7 @@
       <h2>{{ datasets_heading }}</h2>
       <p>{{ _('Goal:') }} {{ c.kpi_goals['total_datasets'] }}</br>
       {{ _('Current total:') }} {{ c.raw_packages_by_week[-1]['total_packages'] }}</br>
-      {{ _('Percentatge complete:') }} {{ c.raw_packages_by_week[-1]['percent_complete'] }}%</p>
+      {{ _('Percent complete:') }} {{ c.raw_packages_by_week[-1]['percent_complete'] }}%</p>
 
       {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
       {% set yaxis = {'min': 0} %}
@@ -27,7 +27,7 @@
           <tr>
             <th>{{ _('Week Starting On') }}</th>
             <th>{{ _('Total Datasets') }}</th>
-            <th>{{ _('Percentage Completed') }}</th>
+            <th>{{ _('Percent Complete') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -73,7 +73,7 @@
       <h2>{{ sources_heading }}</h2>
       <p>{{ _('Goal:') }} {{ c.kpi_goals['total_sources'] }}</br>
       {{ _('Current total:') }} {{ c.raw_harvesters_by_week[-1]['total_packages'] }}</br>
-      {{ _('Percentatge complete:') }} {{ c.raw_harvesters_by_week[-1]['percent_complete'] }}%</p>
+      {{ _('Percent complete:') }} {{ c.raw_harvesters_by_week[-1]['percent_complete'] }}%</p>
       {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
       {% set yaxis = {'min': 0} %}
       <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
@@ -81,7 +81,7 @@
           <tr>
             <th>{{ _('Week Starting On') }}</th>
             <th>{{ _('Total Sources') }}</th>
-            <th>{{ _('Percentage Completed') }}</th>
+            <th>{{ _('Percent Complete') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -177,7 +177,7 @@
       <h2>{{ users_heading }}</h2>
       <p>{{ _('Goal:') }} {{ c.kpi_goals['monthly_users'] }}</br>
       {{ _('Current total:') }} {{ c.num_users_by_month[-1]['users'] }}</br>
-      {{ _('Percentatge complete:') }} {{ c.num_users_by_month[-1]['percent_complete'] }}%</p>
+      {{ _('Percent complete:') }} {{ c.num_users_by_month[-1]['percent_complete'] }}%</p>
 
       {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
       {% set yaxis = {'min': 0} %}
@@ -186,7 +186,7 @@
           <tr>
             <th>{{ _('Month') }}</th>
             <th>{{ _('Users in Month') }}</th>
-            <th>{{ _('Percentage Completed') }}</th>
+            <th>{{ _('Percent Complete') }}</th>
           </tr>
         </thead>
         <tbody>
