@@ -22,14 +22,20 @@ def datetime2date(datetime_):
     return datetime.date(datetime_.year, datetime_.month, datetime_.day)
 
 def get_first_date():
-    first_date = config.get('ckanext.kpis.first_date')
-    if not first_date:
-        tracking_raw = table('tracking_raw')
-        s = select([func.min(tracking_raw.c.access_timestamp)],\
-            from_obj=[tracking_raw])
+    """Return the starting date for calculating all the KPIs.
+    If the date isn't specified in the config, then the earliest revision
+    date is used instead.
+
+    The format of the date in the config must be `YYYY/mm/dd`.
+    """
+    config_date = config.get('ckanext.kpis.first_date')
+    if not config_date:
+        revision = table('revision')
+        s = select([func.min(revision.c.timestamp)],\
+            from_obj=[revision])
         first_date = model.Session.execute(s).fetchone()[0].date()
     else:
-        first_date = datetime.datetime.strptime('01/Jun/2017', '%d/%b/%Y').date()
+        first_date = datetime.datetime.strptime(config_date, '%Y/%m/%d').date()
     return first_date
 
 first_date = get_first_date()
