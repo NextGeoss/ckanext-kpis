@@ -15,34 +15,67 @@ DUMMY_DATE = h.date_str_to_datetime(first_date.strftime(DATE_FORMAT))
 class StatsController(BaseController):
 
     def index(self):
+
         c = p.toolkit.c
 
         c.show_graphs = show_graphs
         c.kpi_goals = kpi_goals
 
         usage_stats = stats_lib.UsageStats()
-        c.num_datasets_by_week = usage_stats.get_dataset_counts('dataset')
-        c.num_harvesters_by_week = usage_stats.get_dataset_counts('harvest')
 
-        c.num_users_by_month = [{'date': h.date_str_to_datetime(month_date),\
-            'users': users, 'percent_complete': percentage} for month_date,\
-            users, percentage in usage_stats.get_monthly_user_counts('all')]
+        monthly_users = usage_stats.get_monthly_user_counts('all')
+        c.num_users_by_month = [
+            {
+                'date': h.date_str_to_datetime(month_date),
+                'users': users,
+                'percent_complete': percentage
+            }
+            for month_date, users, percentage in monthly_users
+        ]
         if not c.num_users_by_month:
-            c.num_users_by_month = [{'date': DUMMY_DATE, 'users': 0, 'percent_complete': 0}]
+            c.num_users_by_month = [
+                {
+                    'date': DUMMY_DATE,
+                    'users': 0,
+                    'percent_complete': 0
+                }
+            ]
 
-
-        c.raw_packages_by_week = [{'date': h.date_str_to_datetime(week_date),\
-            'total_packages': cumulative_num_hits, \
-            'percent_complete': percentage} for week_date,\
-            cumulative_num_hits, percentage in c.num_datasets_by_week]
+        weekly_datasets = usage_stats.get_dataset_counts('dataset')
+        c.raw_packages_by_week = [
+            {
+                'date': h.date_str_to_datetime(week_date),
+                'total_packages': cumulative_num_hits,
+                'percent_complete': percentage
+            }
+            for week_date, cumulative_num_hits, percentage in weekly_datasets
+        ]
         if not c.raw_packages_by_week:
-            c.raw_packages_by_week = [{'date': DUMMY_DATE, 'total_packages': 0, 'percent_complete': 0}]
+            c.raw_packages_by_week = [
+                {
+                    'date': DUMMY_DATE,
+                    'total_packages': 0,
+                    'percent_complete': 0
+                }
+            ]
 
-        c.raw_harvesters_by_week = [{'date': h.date_str_to_datetime(week_date),\
-            'total_packages': sources, \
-            'percent_complete': percentage} for week_date,\
-            sources, percentage in c.num_harvesters_by_week]
+
+        weekly_harvesters = usage_stats.get_dataset_counts('harvest')
+        c.raw_harvesters_by_week = [
+            {
+                'date': h.date_str_to_datetime(week_date),
+                'total_packages': sources,
+                'percent_complete': percentage
+            }
+            for week_date, sources, percentage in weekly_harvesters
+        ]
         if not c.raw_harvesters_by_week:
-            c.raw_harvesters_by_week = [{'date': DUMMY_DATE, 'total_packages': 0, 'percent_complete': 0}]
+            c.raw_harvesters_by_week = [
+                {
+                    'date': DUMMY_DATE,
+                    'total_packages': 0,
+                    'percent_complete': 0
+                }
+            ]
 
         return p.toolkit.render('ckanext/kpis/index.html')
