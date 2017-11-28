@@ -21,15 +21,8 @@ class StatsController(BaseController):
         c.kpi_goals = kpi_goals
 
         usage_stats = stats_lib.UsageStats()
-        c.num_api_calls_by_week = usage_stats.get_hit_counts('api')
-        c.num_hits_by_week = usage_stats.get_hit_counts('page')
-        c.num_api_visits_by_week = usage_stats.get_visit_counts('api')
-        c.num_page_visits_by_week = usage_stats.get_visit_counts('page')
         c.num_datasets_by_week = usage_stats.get_dataset_counts('dataset')
         c.num_harvesters_by_week = usage_stats.get_dataset_counts('harvest')
-        c.num_resources_by_week = usage_stats.get_resource_counts()
-        c.num_organizations_by_week = usage_stats.get_organization_counts()
-
 
         c.num_users_by_month = [{'date': h.date_str_to_datetime(month_date),\
             'users': users, 'percent_complete': percentage} for month_date,\
@@ -45,47 +38,11 @@ class StatsController(BaseController):
         if not c.raw_packages_by_week:
             c.raw_packages_by_week = [{'date': DUMMY_DATE, 'total_packages': 0, 'percent_complete': 0}]
 
-        c.raw_resources_by_week = [{'date': h.date_str_to_datetime(week_date),\
-            'total_resources': cumulative_num_hits} for week_date,\
-            cumulative_num_hits in c.num_resources_by_week]
-        if not c.raw_resources_by_week:
-            c.raw_resources_by_week = [{'date': DUMMY_DATE, 'total_resources': 0}]
-
-        c.raw_organizations_by_week = [{'date': h.date_str_to_datetime(week_date),\
-            'total_organizations': cumulative_num_hits} for week_date,\
-            cumulative_num_hits in c.num_organizations_by_week]
-        if not c.raw_organizations_by_week:
-            c.raw_organizations_by_week = [{'date': DUMMY_DATE, 'total_organizations': 0}]
-
         c.raw_harvesters_by_week = [{'date': h.date_str_to_datetime(week_date),\
             'total_packages': sources, \
             'percent_complete': percentage} for week_date,\
             sources, percentage in c.num_harvesters_by_week]
         if not c.raw_harvesters_by_week:
             c.raw_harvesters_by_week = [{'date': DUMMY_DATE, 'total_packages': 0, 'percent_complete': 0}]
-
-        c.raw_api_calls_by_week = [{'date': h.date_str_to_datetime(week_date),\
-            'total_hits': cumulative_num_hits} for week_date,\
-            cumulative_num_hits in c.num_api_calls_by_week]
-        if not c.raw_api_calls_by_week:
-            c.raw_api_calls_by_week = [{'date': DUMMY_DATE, 'total_hits': 0}]
-
-        c.raw_hits_by_week = [{'date': h.date_str_to_datetime(week_date),\
-            'total_hits': cumulative_num_hits} for week_date,\
-            cumulative_num_hits in c.num_hits_by_week]
-        if not c.raw_hits_by_week:
-            c.raw_hits_by_week = [{'date': DUMMY_DATE, 'total_hits': 0}]
-
-        c.raw_api_visits_by_week = [{'date': h.date_str_to_datetime(week_date),\
-            'total_visits': cumulative_num_visits} for week_date,\
-            cumulative_num_visits in c.num_api_visits_by_week]
-        if not c.raw_api_visits_by_week:
-            c.raw_api_visits_by_week = [{'date': DUMMY_DATE, 'total_visits': 0}]
-
-        c.raw_page_visits_by_week = [{'date': h.date_str_to_datetime(week_date),\
-            'total_visits': cumulative_num_visits} for week_date,\
-            cumulative_num_visits in c.num_page_visits_by_week]
-        if not c.raw_page_visits_by_week:
-            c.raw_page_visits_by_week = [{'date': DUMMY_DATE, 'total_visits': 0}]
 
         return p.toolkit.render('ckanext/kpis/index.html')

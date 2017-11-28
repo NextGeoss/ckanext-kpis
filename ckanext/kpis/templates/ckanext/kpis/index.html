@@ -43,31 +43,6 @@
     </section>
     {% endif %}
 
-    {% if c.kpi_goals['total_resources'] %}
-    <section id="stats-total-resources" class="module-content tab-content">
-      <h2>{{ _('Total Resources (Weekly)') }}</h2>
-
-      {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
-      {% set yaxis = {'min': 0} %}
-      <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
-        <thead>
-          <tr>
-            <th>{{ _("Week") }}</th>
-            <th>{{ _("Total Resources") }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in c.raw_resources_by_week %}
-            <tr>
-              <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date) }}</time></th>
-              <td>{{ row.total_resources }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </section>
-    {% endif %}
-
     {% if c.kpi_goals['total_sources'] %}
     <section id="stats-total-sources" class="module-content tab-content">
       <h2>{{ sources_heading }}</h2>
@@ -90,81 +65,6 @@
               <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date) }}</time></th>
               <td>{{ row.total_packages }}</td>
               <td>{{ row.percent_complete }}%</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </section>
-    {% endif %}
-
-    {% if c.kpi_goals['total_providers'] %}
-    <section id="stats-total-providers" class="module-content tab-content">
-      <h2>{{ _('Total Providers (Weekly)') }}</h2>
-
-      {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
-      {% set yaxis = {'min': 0} %}
-      <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
-        <thead>
-          <tr>
-            <th>{{ _("Week") }}</th>
-            <th>{{ _("Total Providers") }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in c.raw_organizations_by_week %}
-            <tr>
-              <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date) }}</time></th>
-              <td>{{ row.total_organizations }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </section>
-    {% endif %}
-
-    {% if c.kpi_goals['total_api_calls'] %}
-    <section id="stats-total-api-calls" class="module-content tab-content">
-      <h2>{{ _('API Calls per Week') }}</h2>
-
-      {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
-      {% set yaxis = {'min': 0} %}
-      <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
-        <thead>
-          <tr>
-            <th>{{ _("Week") }}</th>
-            <th>{{ _("API Calls") }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in c.raw_api_calls_by_week %}
-            <tr>
-              <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date) }}</time></th>
-              <td>{{ row.total_hits }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </section>
-    {% endif %}
-
-    {% if c.kpi_goals['total_hits'] %}
-    <section id="stats-total-hits" class="module-content tab-content">
-      <h2>{{ _('Website Hits (Weekly)') }}</h2>
-
-      {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
-      {% set yaxis = {'min': 0} %}
-      <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
-        <thead>
-          <tr>
-            <th>{{ _("Week") }}</th>
-            <th>{{ _("Hits") }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in c.raw_hits_by_week %}
-            <tr>
-              <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date) }}</time></th>
-              <td>{{ row.total_hits }}</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -202,56 +102,6 @@
     </section>
     {% endif %}
 
-    {% if c.kpi_goals['total_api_visits'] %}
-    <section id="stats-total-api-visits" class="module-content tab-content">
-      <h2>{{ _('Daily API Users (Weekly)') }}</h2>
-
-      {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
-      {% set yaxis = {'min': 0} %}
-      <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
-        <thead>
-          <tr>
-            <th>{{ _("Week") }}</th>
-            <th>{{ _("Daily API Users") }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in c.raw_api_visits_by_week %}
-            <tr>
-              <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date) }}</time></th>
-              <td>{{ row.total_visits }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </section>
-    {% endif %}
-
-    {% if c.kpi_goals['total_page_visits'] %}
-    <section id="stats-total-page-visits" class="module-content tab-content">
-      <h2>{{ _('Daily Website Users (Weekly)') }}</h2>
-
-      {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
-      {% set yaxis = {'min': 0} %}
-      <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
-        <thead>
-          <tr>
-            <th>{{ _("Week") }}</th>
-            <th>{{ _("Daily Website Users") }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in c.raw_page_visits_by_week %}
-            <tr>
-              <th data-type="date" data-value="{{ row.date.strftime("%s") }}"><time datetime="{{ row.date.isoformat() }}">{{ h.render_datetime(row.date) }}</time></th>
-              <td>{{ row.total_visits }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </section>
-    {% endif %}
-
   </article>
 {% endblock %}
 
@@ -262,28 +112,10 @@
       <ul class="unstyled nav nav-simple">
         {% if c.kpi_goals['total_datasets'] %}
         <li class="nav-item active"><a href="#stats-total-datasets" data-toggle="tab">{{ datasets_heading }}</a></li>
-        {% endif %}
-        {% if c.kpi_goals['total_resources'] %}
-        <li class="nav-item"><a href="#stats-total-resources" data-toggle="tab">{{ _('Total Resources (Weekly)') }}</a></li>
-        {% endif %}        
+        {% endif %}       
         {% if c.kpi_goals['total_sources'] %}
         <li class="nav-item"><a href="#stats-total-sources" data-toggle="tab">{{ sources_heading }}</a></li>
         {% endif %}        
-        {% if c.kpi_goals['total_providers'] %}        
-        <li class="nav-item"><a href="#stats-total-providers" data-toggle="tab">{{ _('Total Providers (Weekly)') }}</a></li>
-        {% endif %}
-        {% if c.kpi_goals['total_api_calls'] %}
-        <li class="nav-item"><a href="#stats-total-api-calls" data-toggle="tab">{{ _('API Calls (Weekly)') }}</a></li>
-        {% endif %}        
-        {% if c.kpi_goals['total_hits'] %}        
-        <li class="nav-item"><a href="#stats-total-hits" data-toggle="tab">{{ _('Website Hits (Weekly)') }}</a></li>
-        {% endif %}        
-        {% if c.kpi_goals['total_api_visits'] %}        
-        <li class="nav-item"><a href="#stats-total-api-visits" data-toggle="tab">{{ _('Daily API Users (Weekly)') }}</a></li>
-        {% endif %}
-        {% if c.kpi_goals['total_page_visits'] %}        
-        <li class="nav-item"><a href="#stats-total-page-visits" data-toggle="tab">{{ _('Daily Website Users (Weekly)') }}</a></li>
-        {% endif %}
         {% if c.kpi_goals['monthly_users'] %}        
         <li class="nav-item"><a href="#stats-total-monthly-users" data-toggle="tab">{{ users_heading }}</a></li>
         {% endif %}
