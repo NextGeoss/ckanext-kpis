@@ -8,68 +8,48 @@
 .. image:: https://coveralls.io/repos/nextgeoss/ckanext-kpis/badge.svg
   :target: https://coveralls.io/r/nextgeoss/ckanext-kpis
 
-.. image:: https://pypip.in/download/ckanext-kpis/badge.svg
-    :target: https://pypi.python.org/pypi//ckanext-kpis/
-    :alt: Downloads
-
-.. image:: https://pypip.in/version/ckanext-kpis/badge.svg
-    :target: https://pypi.python.org/pypi/ckanext-kpis/
-    :alt: Latest Version
-
-.. image:: https://pypip.in/py_versions/ckanext-kpis/badge.svg
-    :target: https://pypi.python.org/pypi/ckanext-kpis/
-    :alt: Supported Python versions
-
-.. image:: https://pypip.in/status/ckanext-kpis/badge.svg
-    :target: https://pypi.python.org/pypi/ckanext-kpis/
-    :alt: Development Status
-
-.. image:: https://pypip.in/license/ckanext-kpis/badge.svg
-    :target: https://pypi.python.org/pypi/ckanext-kpis/
-    :alt: License
 
 =============
 ckanext-kpis
 =============
 
-.. Put a description of your extension here:
-   What does it do? What features does it have?
-   Consider including some screenshots or embedding a video!
+ckanext-kpis tracks and presents KPIs on a dedicated page.
+
+Goals can be defined in the portal configuration file.
+
+The goals/tracking currently supported are:
+
+1. Number of datasets, evaluated weekly
+
+2. Number of sources/harvesters, evaluated weekly
+
+3. Number of unique monthly users (of the website and of the API)
+
+The extension is based on ckanext-stats, though most of the back end
+code is different now. The basic presentation on the front end remains
+much the same.
+
+The extension replaces the CKAN core TrackingMiddleware with a modified
+version that also tracks API calls.
 
 
 ------------
 Requirements
 ------------
 
-For example, you might want to mention here which versions of CKAN this
-extension works with.
+ckanext-kpis works with CKAN version 2.6.x and up. There are no additional requirements.
 
 
 ------------
 Installation
 ------------
 
-.. Add any additional install steps to the list below.
-   For example installing any non-Python dependencies or adding any required
-   config settings.
+To install ckanext-kpis, activate your CKAN virtualenv and
+do:
 
-To install ckanext-kpis:
-
-1. Activate your CKAN virtual environment, for example::
-
-     . /usr/lib/ckan/default/bin/activate
-
-2. Install the ckanext-kpis Python package into your virtual environment::
-
-     pip install ckanext-kpis
-
-3. Add ``kpis`` to the ``ckan.plugins`` setting in your CKAN
-   config file (by default the config file is located at
-   ``/etc/ckan/default/production.ini``).
-
-4. Restart CKAN. For example if you've deployed CKAN with Apache on Ubuntu::
-
-     sudo service apache2 reload
+    git clone https://github.com/nextgeoss/ckanext-kpis.git
+    cd ckanext-kpis
+    python setup.py develop
 
 
 ---------------
@@ -78,89 +58,23 @@ Config Settings
 
 Document any optional config settings here. For example::
 
-    # The minimum number of hours to wait before re-checking a resource
-    # (optional, default: 24).
-    ckanext.kpis.some_setting = some_default_value
+    # Set the start date for displaying stats on the portal
+    # (not the date on which tracking begins, but the earliest
+    # date for which you want to display stats).
+    # (Optional. Default value: the date of the first revision
+    # in the CKAN database)
+    # Format: YYYY/mm/dd
+    ckanext.kpis.first_date = 2017/04/19
 
+    # By default, the KPI stats are displayed in a table. If this
+    # setting is enabled, a graph of the stats will also be 
+    # displayed above each table.
+    # (Optional. Default value: False)
+    ckanext-kpis.show_graphs = True
 
-------------------------
-Development Installation
-------------------------
-
-To install ckanext-kpis for development, activate your CKAN virtualenv and
-do::
-
-    git clone https://github.com/nextgeoss/ckanext-kpis.git
-    cd ckanext-kpis
-    python setup.py develop
-    pip install -r dev-requirements.txt
-
-
------------------
-Running the Tests
------------------
-
-To run the tests, do::
-
-    nosetests --nologcapture --with-pylons=test.ini
-
-To run the tests and produce a coverage report, first make sure you have
-coverage installed in your virtualenv (``pip install coverage``) then run::
-
-    nosetests --nologcapture --with-pylons=test.ini --with-coverage --cover-package=ckanext.kpis --cover-inclusive --cover-erase --cover-tests
-
-
----------------------------------
-Registering ckanext-kpis on PyPI
----------------------------------
-
-ckanext-kpis should be availabe on PyPI as
-https://pypi.python.org/pypi/ckanext-kpis. If that link doesn't work, then
-you can register the project on PyPI for the first time by following these
-steps:
-
-1. Create a source distribution of the project::
-
-     python setup.py sdist
-
-2. Register the project::
-
-     python setup.py register
-
-3. Upload the source distribution to PyPI::
-
-     python setup.py sdist upload
-
-4. Tag the first release of the project on GitHub with the version number from
-   the ``setup.py`` file. For example if the version number in ``setup.py`` is
-   0.0.1 then do::
-
-       git tag 0.0.1
-       git push --tags
-
-
-----------------------------------------
-Releasing a New Version of ckanext-kpis
-----------------------------------------
-
-ckanext-kpis is availabe on PyPI as https://pypi.python.org/pypi/ckanext-kpis.
-To publish a new version to PyPI follow these steps:
-
-1. Update the version number in the ``setup.py`` file.
-   See `PEP 440 <http://legacy.python.org/dev/peps/pep-0440/#public-version-identifiers>`_
-   for how to choose version numbers.
-
-2. Create a source distribution of the new version::
-
-     python setup.py sdist
-
-3. Upload the source distribution to PyPI::
-
-     python setup.py sdist upload
-
-4. Tag the new release of the project on GitHub with the version number from
-   the ``setup.py`` file. For example if the version number in ``setup.py`` is
-   0.0.2 then do::
-
-       git tag 0.0.2
-       git push --tags
+    # The goals for the total number of datasets, total number of
+    # harvesters/sources and the number of monthly users can be
+    # configured with a JSON dictionary.
+    # (Optional. Default values: see exmple below)
+    # Format: {"total_datasets": an_integer, "monthly_users": an_integer, "total_sources": an_integer}
+    ckanext.kpis.goals={"total_datasets": 10000000, "monthly_users": 2000, "total_sources": 10}
