@@ -2,7 +2,7 @@
    these badges work. The necessary Travis and Coverage config files have been
    generated for you.
 
-.. image:: https://travis-ci.org/nextgeoss/ckanext-kpis.svg?branch=master
+.. image:: https://travis-ci.org/NextGeoss/ckanext-kpis.svg?branch=master
     :target: https://travis-ci.org/nextgeoss/ckanext-kpis
 
 .. image:: https://coveralls.io/repos/nextgeoss/ckanext-kpis/badge.svg
@@ -55,8 +55,6 @@ do:
 ---------------
 Config Settings
 ---------------
-
-Document any optional config settings here. For example::
 
     # Set the start date for displaying stats on the portal
     # (not the date on which tracking begins, but the earliest
