@@ -62,11 +62,6 @@ class TrackingPlusMiddleware(object):
                     data[k] = urllib2.unquote(v).decode("utf8")
                 url = data.get('url')
                 tracking_type = data.get('type')
-                qry = environ['HTTP_REFERER'].split('?', 1)
-                if len(qry) == 2:
-                    query = qry[1]
-                else:
-                    query = ''
                 start_response('200 OK', [('Content-Type', 'text/html')])
             elif path.startswith('/api') and 'action' in path:
                 url = environ['PATH_INFO']

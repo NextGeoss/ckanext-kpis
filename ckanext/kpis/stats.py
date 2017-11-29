@@ -2,10 +2,9 @@
 
 import datetime
 import calendar
-from sqlalchemy import Table, select, join, func, and_, distinct
+from sqlalchemy import Table, select, func, and_, distinct
 
 from ckan.common import config
-import ckan.plugins as p
 import ckan.model as model
 
 from ckanext.kpis.plugin import kpi_goals
