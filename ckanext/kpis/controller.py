@@ -1,4 +1,5 @@
 # encoding: utf-8
+"""Contains the controller for KPI page."""
 
 import ckan.plugins as p
 from ckan.lib.base import BaseController
@@ -12,10 +13,12 @@ from ckanext.kpis.stats import DATE_FORMAT
 
 DUMMY_DATE = h.date_str_to_datetime(first_date.strftime(DATE_FORMAT))
 
+
 class StatsController(BaseController):
+    """Controller for KPI pages."""
 
     def index(self):
-
+        """Render the KPI index page."""
         c = p.toolkit.c
 
         c.show_graphs = show_graphs
@@ -58,7 +61,6 @@ class StatsController(BaseController):
                     'percent_complete': 0
                 }
             ]
-
 
         weekly_harvesters = usage_stats.get_dataset_counts('harvest')
         c.raw_harvesters_by_week = [

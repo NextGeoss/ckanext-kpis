@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+"""Helper functions for configuring and displaying KPIs."""
+
 import json
 
 from ckan.common import config
@@ -6,8 +9,9 @@ from ckan.common import config
 def get_goals():
     """
     Return a dictionary with the KPI goals.
-    If no goals are defined in the config, return a dictionary with 
-    placeholder values. If the goals are defined in an invalid way, 
+
+    If no goals are defined in the config, return a dictionary with
+    placeholder values. If the goals are defined in an invalid way,
     raise an exception.
     """
     default_goals = {
