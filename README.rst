@@ -1,12 +1,8 @@
-.. You should enable this project on travis-ci.org and coveralls.io to make
-   these badges work. The necessary Travis and Coverage config files have been
-   generated for you.
-
 .. image:: https://travis-ci.org/NextGeoss/ckanext-kpis.svg?branch=master
     :target: https://travis-ci.org/nextgeoss/ckanext-kpis
 
-.. image:: https://coveralls.io/repos/nextgeoss/ckanext-kpis/badge.svg
-  :target: https://coveralls.io/r/nextgeoss/ckanext-kpis
+.. image:: https://coveralls.io/repos/NextGeoss/ckanext-kpis/badge.svg
+  :target: https://coveralls.io/r/NextGeoss/ckanext-kpis
 
 
 =============
