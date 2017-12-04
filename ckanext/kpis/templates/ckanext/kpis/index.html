@@ -102,23 +102,95 @@
     </section>
     {% endif %}
 
+    <section id="guf-completeness" class="module-content tab-content">
+      <h2>GUF Elements Implemented (20.34% complete)</h2>
+      <p>{{ _('Goal:') }} 80% of the 118 elements in the standard</br>
+      {{ _('Current total:') }} 24</br>
+      {{ _('Percent complete:') }} 20.34%</p>
+
+      {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
+      {% set yaxis = {'min': 0} %}
+      <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
+        <thead>
+          <tr>
+            <th>{{ _('Reporting Period') }}</th>
+            <th>{{ _('Elements Implemented') }}</th>
+            <th>{{ _('Percent Complete') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {% set date = h.date_str_to_datetime('2017/12/01') %}
+            <th data-type="date" data-value="{{ date.strftime("%s") }}"><time datetime="{{ date.isoformat() }}">{{ h.render_datetime(date, '%B %Y') }}</time></th>
+            <td>24</td>
+            <td>20.34%</td>
+          </tr>
+        </tbody>
+      </table>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </section>
+
+    <section id="guf-users" class="module-content tab-content">
+      <h2>GUF Users Adoption (TBD)</h2>
+      <p>{{ _('Goal:') }} TBD</br>
+      {{ _('Current total:') }} N/A</br>
+      {{ _('Percent complete:') }} N/A</p>
+
+      {% set xaxis = {'mode': 'time', 'timeformat': '%y-%b'} %}
+      {% set yaxis = {'min': 0} %}
+      <table class="table table-chunky table-bordered table-striped" data-module="plot" data-module-xaxis="{{ h.dump_json(xaxis) }}" data-module-yaxis="{{ h.dump_json(yaxis) }}">
+        <thead>
+          <tr>
+            <th>{{ _('Reporting Period') }}</th>
+            <th>{{ _('GUF Users') }}</th>
+            <th>{{ _('Percent Complete') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {% set date = h.date_str_to_datetime('2017/12/01') %}
+            <th data-type="date" data-value="{{ date.strftime("%s") }}"><time datetime="{{ date.isoformat() }}">{{ h.render_datetime(date, '%B %Y') }}</time></th>
+            <td>N/A</td>
+            <td>N/A</td>
+          </tr>
+        </tbody>
+      </table>
+      </br>
+      </br>
+      </br>
+      </br>
+      </br>
+      </br>
+      </br>
+      </br>
+    </section>
+
   </article>
 {% endblock %}
 
 {% block secondary_content %}
   <section class="module module-narrow">
-    <h2 class="module-heading"><i class="fa fa-bar-chart-o"></i> {{ _('KPI Menu') }}</h2>
+    <h2 class="module-heading"><i class="icon-bar-chart icon-medium"></i> {{ _('KPI Menu') }}</h2>
     <nav data-module="stats-nav">
       <ul class="unstyled nav nav-simple">
         {% if c.kpi_goals['total_datasets'] %}
         <li class="nav-item active"><a href="#stats-total-datasets" data-toggle="tab">{{ datasets_heading }}</a></li>
-        {% endif %}       
+        {% endif %}        
         {% if c.kpi_goals['total_sources'] %}
         <li class="nav-item"><a href="#stats-total-sources" data-toggle="tab">{{ sources_heading }}</a></li>
-        {% endif %}        
+        {% endif %}
         {% if c.kpi_goals['monthly_users'] %}        
         <li class="nav-item"><a href="#stats-total-monthly-users" data-toggle="tab">{{ users_heading }}</a></li>
         {% endif %}
+        <li class="nav-item"><a href="#guf-completeness" data-toggle="tab">GUF Elements Implemented (20.34% complete)</a></li>
+        <li class="nav-item"><a href="#guf-users" data-toggle="tab">GUF Users Adoption (TBD)</a></li>
       </ul>
     </nav>
   </section>
