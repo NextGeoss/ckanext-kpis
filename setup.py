@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Set up the CKAN extansion."""
 
-from setuptools import setup, find_packages  # Always prefer setuptools over distutils
+from setuptools import setup, find_packages  # Always prefer setuptools over distutils  # noqa: E501
 from codecs import open  # To use a consistent encoding
 from os import path
 
@@ -19,7 +19,7 @@ setup(
     # http://packaging.python.org/en/latest/tutorial.html#version
     version='0.0.1',
 
-    description="""An extension for tracking KPIs based on CKAN's stats extension""",
+    description="""An extension for tracking KPIs based on CKAN's stats extension""",  # noqa: E501
     long_description=long_description,
 
     # The project's main homepage.
@@ -41,7 +41,7 @@ setup(
         'Development Status :: 4 - Beta',
 
         # Pick your license as you wish (should match "license" above)
-        'License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)',
+        'License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)',  # noqa: E501
 
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
@@ -73,7 +73,7 @@ setup(
 
     # Although 'package_data' is the preferred approach, in some case you may
     # need to place data files outside of your packages.
-    # see http://docs.python.org/3.4/distutils/setupscript.html#installing-additional-files
+    # see http://docs.python.org/3.4/distutils/setupscript.html#installing-additional-files  # noqa: E501
     # In this case, 'data_file' will be installed into '<sys.prefix>/my_data'
     data_files=[],
 
